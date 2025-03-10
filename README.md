@@ -26,8 +26,12 @@ The database schema includes the following tables:
 
 - Supabase account
 - Supabase CLI (optional, for local development)
+- Bash shell (for running the migration script)
+- curl (for API requests in the migration script)
 
-### Installation
+### Installation Options
+
+#### Option 1: Manual Setup
 
 1. **Create a new Supabase project**
 
@@ -36,15 +40,34 @@ The database schema includes the following tables:
    - Copy the contents of `schema.sql`
    - Paste and run the SQL in the editor
 
-3. **Configure Authentication**
-   - Enable Email/Password sign-up in Authentication settings
-   - (Optional) Configure additional auth providers like Google, Apple, etc.
+3. **Set up storage buckets**
+   - Run the `storage_setup.sql` script in the SQL Editor
 
-4. **Storage Setup**
-   - Create the following buckets:
-     - `profiles` - For profile pictures
-     - `audio_recordings` - For audio files
-   - Set appropriate RLS policies for the buckets
+4. **Load sample data (optional)**
+   - Edit the `sample_data.sql` file to replace `'your-user-id'` with your actual user ID
+   - Run the modified script in the SQL Editor
+
+#### Option 2: Using Migrations
+
+1. **Create a new Supabase project**
+
+2. **Run the migration script**
+   ```bash
+   # Make the script executable
+   chmod +x run_migrations.sh
+   
+   # Run the migrations
+   SUPABASE_URL=https://your-project-id.supabase.co SUPABASE_KEY=your-anon-key ./run_migrations.sh
+   ```
+
+3. **Load sample data (optional)**
+   - Edit the `sample_data.sql` file to replace `'your-user-id'` with your actual user ID
+   - Run the modified script in the SQL Editor
+
+### Configure Authentication
+
+- Enable Email/Password sign-up in Authentication settings
+- (Optional) Configure additional auth providers like Google, Apple, etc.
 
 ### Connecting to Your App
 
@@ -113,6 +136,15 @@ SUPABASE_ANON_KEY=your-anon-key
 - `update_updated_at_column()` - Updates the updated_at timestamp on record changes
 - `process_tags()` - Extracts and stores tags from notes and tasks
 - `search_items()` - Searches across notes and tasks
+
+## Migrations
+
+The `migrations` directory contains SQL scripts for incremental database updates:
+
+1. `001_initial_schema.sql` - Creates the base tables and functions
+2. `002_tag_processing.sql` - Adds tag processing functionality
+3. `003_search_function.sql` - Adds search functionality
+4. `004_storage_setup.sql` - Sets up storage buckets and policies
 
 ## License
 
